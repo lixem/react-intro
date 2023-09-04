@@ -23,6 +23,12 @@ function App() {
   const completedTodos = todos.filter(todo => !!todo.completed).length;
   const totalTodos = todos.length;
 
+  const searchedTodos = todos.filter(
+    (todo) => {
+      todo.text.includes(searchValue)
+    }
+  );
+
   console.log('Los usuarios buscan todos de '+
   searchValue);
 
