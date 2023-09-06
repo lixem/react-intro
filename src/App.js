@@ -25,12 +25,30 @@ function App() {
 
   const searchedTodos = todos.filter(
     (todo) => {
-      todo.text.includes(searchValue)
+      const todoText = todo.text.toLowerCase();
+      const searchText = searchValue.toLocaleLowerCase();
+
+      return todoText.includes(searchText)
     }
   );
 
-  console.log('Los usuarios buscan todos de '+
-  searchValue);
+  const completeTodo = (text) => {
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex(
+      (todo) => todo.text == text
+    );
+    newTodos[todoIndex].completed = true;
+    setTodos(newTodos);
+  }
+
+  const deleteTodo = (text) => {
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex(
+      (todo) => todo.text == text
+    );
+    newTodos.splice(todoIndex, 1);
+    setTodos(newTodos);
+  }
 
   return (
     <>
@@ -40,11 +58,13 @@ function App() {
         searchValue = {searchValue}
         setSearchValue = {setSearchValue}/>
       <TodoList>
-        { defaultTodos.map( ({text,completed}) => (
+        { searchedTodos.map( ({text,completed}) => (
           <TodoItem 
                 key={text} 
                 text={text} 
-                completed={completed} />
+                completed={completed}
+                onComplete={() => completeTodo(text)}
+                onDelete={() => deleteTodo(text)} />
         )) }
       </TodoList>
 
@@ -53,8 +73,5 @@ function App() {
     </>
   );
 }
-
-
-
 
 export default App;
